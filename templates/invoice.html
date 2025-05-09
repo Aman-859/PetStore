@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Invoice - Order #{{ order.orderid }}</title>
+        <style>
+            :root {
+                --primary-color: #4e54c8;
+                --secondary-color: #8f94fb;
+                --accent-color: #ff6b6b;
+                --text-color: #333333;
+                --light-text: #666666;
+                --border-radius: 12px;
+                --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+    
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f8f9fa;
+                color: var(--text-color);
+                line-height: 1.6;
+            }
+    
+            .container {
+                max-width: 800px;
+                margin: 40px auto;
+                background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
+                overflow: hidden;
+            }
+    
+            .invoice-header {
+                background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+                color: white;
+                padding: 30px;
+                position: relative;
+            }
+    
+            .invoice-header h1 {
+                font-size: 28px;
+                margin-bottom: 5px;
+                font-weight: 600;
+            }
+    
+            .invoice-header p {
+                opacity: 0.9;
+                font-size: 16px;
+            }
+    
+            .paw-icon {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    
+            .invoice-body {
+                padding: 40px;
+            }
+    
+            .invoice-details {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+            }
+    
+            .invoice-id {
+                background-color: #e6eeff;
+                padding: 10px 15px;
+                border-radius: 8px;
+                display: inline-block;
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 15px;
+            }
+    
+            .invoice-date {
+                color: var(--light-text);
+                font-size: 15px;
+            }
+    
+            .invoice-section {
+                margin-bottom: 30px;
+            }
+    
+            .invoice-section h2 {
+                font-size: 18px;
+                color: var(--primary-color);
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+                border-bottom: 2px solid #eaeaea;
+            }
+    
+            .customer-info {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 30px;
+            }
+    
+            .customer-info p {
+                margin-bottom: 8px;
+            }
+    
+            .customer-name {
+                font-weight: 600;
+                font-size: 17px;
+            }
+    
+            .customer-email {
+                color: var(--light-text);
+            }
+    
+            .order-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 30px;
+            }
+    
+            .order-table th {
+                background-color: #f0f3f8;
+                padding: 12px 15px;
+                text-align: left;
+                font-weight: 600;
+                color: var(--primary-color);
+                border-bottom: 2px solid #e0e6ed;
+            }
+    
+            .order-table td {
+                padding: 15px;
+                border-bottom: 1px solid #eaeaea;
+            }
+    
+            .order-table tr:last-child td {
+                border-bottom: none;
+            }
+    
+            .item-name {
+                font-weight: 500;
+            }
+    
+            .order-table .text-right {
+                text-align: right;
+            }
+    
+            .order-summary {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 30px;
+            }
+    
+            .total-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-top: 2px solid #e0e6ed;
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--primary-color);
+            }
+    
+            .payment-status {
+                display: inline-block;
+                padding: 8px 15px;
+                background-color: #d4edda;
+                color: #155724;
+                border-radius: 6px;
+                font-weight: 500;
+                margin-top: 10px;
+            }
+    
+            .thank-you {
+                text-align: center;
+                margin: 40px 0 20px;
+            }
+    
+            .thank-you h2 {
+                color: var(--primary-color);
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+    
+            .thank-you p {
+                color: var(--light-text);
+            }
+    
+            .invoice-footer {
+                background-color: #f0f3f8;
+                padding: 20px;
+                text-align: center;
+                color: var(--light-text);
+                font-size: 14px;
+            }
+    
+            .contact-info {
+                margin-top: 10px;
+            }
+    
+            .contact-info a {
+                color: var(--primary-color);
+                text-decoration: none;
+            }
+    
+            @media (max-width: 768px) {
+                .container {
+                    margin: 20px;
+                    width: auto;
+                }
+    
+                .invoice-body {
+                    padding: 20px;
+                }
+    
+                .invoice-details {
+                    flex-direction: column;
+                }
+            }
+    
+            /* Fix for Currency Symbol */
+            .currency-symbol {
+                font-family: 'Arial', sans-serif;
+                font-weight: bold;
+                color: var(--primary-color);
+            }
+        </style>
+    </head>
+    
+    
+    
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="invoice-header">
+            <h1>Pet Store Invoice</h1>
+            <p>Thank you for choosing our furry friends!</p>
+            <div class="paw-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 16 16">
+                    <path d="M7 0s-1 2-1 4 1 4 1 4-2-2-4-2-4 1-4 1 2 1 2 3-1 4-1 4 3-1 5-1 5 1 5 1-1-2-1-4 2-3 2-3-2-1-4-1-4 2-4 2 1-2 1-4-1-4-1-4zm5.5 7a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="invoice-body">
+            <!-- Invoice Details -->
+            <div class="invoice-details">
+                <div>
+                    <div class="invoice-id">Invoice #{{ orderid }}</div>
+                    <div class="invoice-date">Date: {{ date|date:"d M Y, h:i A" }}</div>
+                </div>
+            </div>
+
+            <!-- Customer Info -->
+            <div class="invoice-section">
+                <h2>Customer Information</h2>
+                <div class="customer-info">
+                    <p class="customer-name">{{ user.first_name }} {{ user.last_name }}</p>
+                    <p class="customer-email">{{ user.email }}</p>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="invoice-section">
+                <h2>Order Details</h2>
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th class="text-right">Price (₹)</th>
+                            <th class="text-right">Total (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td class="item-name">{{ order.petid.name }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td class="text-right"><span class="currency-symbol">&#8377;</span>{{ order.petid.price }}</td>
+                            <td class="text-right"><span class="currency-symbol">&#8377;</span>{{ order.totalbill }}</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="invoice-section">
+                <h2>Order Summary</h2>
+                <div class="order-summary">
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span>₹{{ totalbill }}</span>
+                    </div>
+                    <div class="payment-status">Payment Completed</div>
+                </div>
+            </div>
+
+            <!-- Thank You Note -->
+            <div class="thank-you">
+                <h2>Thank You for Your Purchase!</h2>
+                <p>We hope your new pet brings you joy and happiness.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="invoice-footer">
+            <p>&copy; {{ date|date:"Y" }} Premium Pet Store | All Rights Reserved</p>
+            <div class="contact-info">
+                <p>Questions? Contact us at <a href="mailto:support@petstore.com">support@petstore.com</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

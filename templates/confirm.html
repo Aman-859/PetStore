@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+
+<div class="col-md-10">
+  <div class="row">
+    <div class="col-md-7" style="margin-left: 10px;">
+      <h3 class="mb-4 fw-bold border-bottom pb-2">✅ Confirm Your Order</h3>
+
+      {% for cart in mycart %}
+      <div class="row border rounded mb-4 shadow-sm p-3">
+        <div class="col-md-5">
+          <img src="{{ cart.petid.img.url }}" class="img-fluid rounded" alt="{{ cart.petid.name }}">
+        </div>
+        <div class="col-md-7">
+          <h5>Name: {{ cart.petid.name }}</h5>
+          <h6 class="mt-2">Gender: {{ cart.petid.gender }}</h6>
+          <p class="mt-2 mb-1"><strong>Description:</strong> {{ cart.petid.description }}</p>
+          <h6 class="mt-2">Price: ₹{{ cart.petid.price }}</h6>
+          <p>Quantity: <span class="mt-2">{{ cart.quantity }}</span></p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="col-md-4 mt-3">
+      <h3 class="mb-4">🧾 Final Order Summary</h3>
+
+      <div class="card shadow rounded-4 p-4 border-0">
+        <div class="mb-3 d-flex justify-content-between">
+          <span class="fw-semibold">🛍️ Total Items:</span>
+          <span>{{ count }}</span>
+        </div>
+
+        <div class="mb-3 d-flex justify-content-between">
+          <span class="fw-semibold">💰 Total Price:</span>
+          <span class="fw-bold">₹{{ totalbill }}</span>
+        </div>
+
+        {% if code %}
+        <div class="mb-3 d-flex justify-content-between">
+          <span class="fw-semibold text-success">🏷️ Coupon Applied:</span>
+          <span class="text-primary fw-semibold">{{ code }}</span>
+        </div>
+
+        <div class="mb-3 d-flex justify-content-between">
+          <span class="fw-semibold">🎉 Discount:</span>
+          <span class="text-danger fw-bold">- ₹{{ discount }}</span>
+        </div>
+
+        <div class="mb-3 d-flex justify-content-between border-top pt-2">
+          <span class="fw-bold">💳 Final Payable:</span>
+          <span class="text-success fw-bold">₹{{ finallbill }}</span>
+        </div>
+        {% else %}
+        <div class="mb-3 d-flex justify-content-between border-top pt-2">
+          <span class="fw-bold">💳 Final Payable:</span>
+          <span class="text-success fw-bold">₹{{ totalbill }}</span>
+        </div>
+        {% endif %}
+
+        <hr>
+
+        <div class="text-center">
+          <a href="/makepayment" class="btn btn-success w-100 fw-semibold mb-2">✔️ Confirm & Place Order</a>
+          <a href="/show-mycart" class="btn btn-outline-secondary w-100 fw-semibold">← Back to Cart</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock 'main' %}

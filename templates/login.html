@@ -1,0 +1,54 @@
+{%extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<style>
+    .box1 {
+        width: 400px;
+        height: 350px;
+        background-color: #e6ecf1;
+        padding: 20px;
+        margin-top: 75px;
+        margin-bottom: 50px;
+        margin-left: 330px;
+        border-radius: 10px;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+        line-height: 10px;
+        color: black;
+
+    }
+</style>
+
+    <div class="col-md-10 bg-success p-2 text-dark bg-opacity-25" style="background-color:rgb(223, 179, 227);">
+        <div class="box1">
+            <h4 style="text-align: center; color: orange; font-weight: 700; font-size: 30px;">Login</h4><br>
+            <h5 style="text-align: center; color: black';">or <a href="/register"><span
+                        style="color: rgb(3, 47, 112); font: size 14px;">New Registration</span></h5></a>
+            <div class="mb-3">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        {{error}}
+                    </div>
+                    {% endif %}
+                <label for="exampleFormControlInput2" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput2" name="name"
+                    placeholder="Enter Email" required>     
+            </div><br>
+            <div class="mb-3">
+                <label for="exampleFormControlInput3" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleFormControlInput3" name="password"
+                    placeholder="Enter Password" required>
+            </div><br>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    {% endblock 'main' %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'main' %}
+<div class="col-md-9 mt-2 p-3">
+  <!-- Main Content -->
+  <div class="row">
+    <!-- Product Card Start -->
+    <div class="col-md-12 mt-2">
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="row g-0">
+          <!-- Image Section -->
+          <div class="col-md-6">
+            <img src="{{ pet.img.url }}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ pet.name }}">
+          </div>
+          <!-- Content Section -->
+          <div class="col-md-6">
+            <div class="card-body">
+              <h3 class="card-title">{{ pet.name }}</h3>
+              <p class="mb-1"><strong>Type:</strong> {{ pet.type }}</p>
+              <p class="mb-1"><strong>Breed:</strong> {{ pet.breed }}</p>
+              <p class="mb-1"><strong>Age:</strong> {{ pet.age }} years</p>
+              <p class="mb-1"><strong>Gender:</strong> {{ pet.gender }}</p>
+              <p class="mb-3"><strong>Price:</strong> <span class="text-success">₹{{ pet.price }}</span></p>
+              
+              <div class="mb-3">
+                <strong>Description:</strong>
+                <p class="text-muted">{{ pet.description }}</p>
+              </div>
+              {% if request.user.is_authenticated %}
+              <a href='/addcart/{{pet.id}}' class="btn btn-danger me-2">Add To Cart</a>
+              {% else %}
+              <a href='/login' class="btn btn-danger me-2">Add To Cart</a>
+              {% endif %}
+
+              <a href="/" class="btn btn-outline-secondary">Back</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Product Card End -->
+  </div>
+</div>
+
+{% endblock 'main' %}

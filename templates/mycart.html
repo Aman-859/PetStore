@@ -1,0 +1,100 @@
+{%extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+
+
+<div class="col-md-10">
+
+    <div class="row">
+        <div class="col-md-7" style="margin-left: 10px;">
+            <h3 class="mb-4 fw-bold border-bottom pb-2">
+                🛒 Your Shopping Cart
+              </h3>
+              
+    
+            {% for cart in mycart %}
+            <div class="row border rounded mb-4 shadow-sm p-3">
+               
+              <div class="col-md-5">
+                <img src="{{ cart.petid.img.url }}" class="img-fluid rounded" alt="{{ cart.petid.name }}">
+              </div>
+    
+              
+              <div class="col-md-7">
+                <h5>Name: {{ cart.petid.name }}</h5>
+                <h6 class="mt-2">Gender: {{ cart.petid.gender }}</h6>
+                <p class="mt-2 mb-1"><strong>Description:</strong> {{ cart.petid.description }}</p>
+                <h6 class="mt-2">Price: ₹{{ cart.petid.price }}</h6>
+                {% if cart.quantity > 1 %}
+                <a class="btn btn-primary" href="/updatequantity/{{ cart.id }}/decr">-</a>
+                {% endif %}
+                <span class="mt-2">{{ cart.quantity }}</span>
+                <a class="btn btn-primary" href="/updatequantity/{{ cart.id }}/incr">+</a>
+                <a href="/remove-cart/{{ cart.id }}" class="btn btn-sm btn-primary mt-3">Remove from Cart</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+    
+          <div class="col-md-4 mt-3">
+            <h3 class="mb-4">🧾 Order Summary</h3>
+          
+            <div class="card shadow rounded-4 p-4 border-0">
+              <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-semibold">🛍️ Total Items:</span>
+                <span>{{ count }}</span>
+              </div>
+            
+              <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-semibold">💰 Total Price:</span>
+                <span class="text-success fw-bold">₹{{ totalbill }}</span>
+              </div>
+            
+              <form method="POST" action="/show-mycart/">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                   
+                  <input type="text" name="coupon_code" class="form-control" placeholder="Enter coupon code" value="{{code}}" >
+                  
+                  {% if discount %}
+                  <button class="btn btn-outline-primary" type="submit"   name="remove_coupon" >Remove</button>
+                  {% else %}
+                  <button class="btn btn-outline-primary" type="submit">Apply</button>
+                  {% endif %}
+                </div>
+                {% if error %}
+                <p class="text-danger small">{{error}}</p>
+                {% endif %}
+                {% if discount %}
+                <div class="mb-3 d-flex justify-content-between">
+                  <span class="fw-semibold">🎁 Coupon Applied:</span>
+                  <span class="text-success">{{ code }}</span>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <span class="fw-semibold">🎁 Discount:</span>
+                  <span class="text-danger">₹{{ discount }}</span>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <span class="fw-semibold">🧾 Final Total:</span>
+                  <span class="text-success fw-bold">₹{{ final_bill }}</span>
+                </div>
+                
+              {% endif %}
+              </form>
+            
+              <hr>
+            {% if count  %}
+              <div class="text-center">
+                <p class="text-muted small mb-2">Taxes and shipping calculated at checkout.</p>
+                <a href="/confirmorder" class="btn btn-success w-100 fw-semibold">Confirm Order</a>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+          
+</div>
+
+
+
+
+{% endblock 'main' %}

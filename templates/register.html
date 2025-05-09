@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<div class="col-md-4 bg-success p-2 text-dark bg-opacity-25 " style="background-color: rgb(223, 179, 227); margin-left: 250px;">
+    <div class="box">
+        {% if error %}
+        <div class="alert alert-danger">{{error}}</div>
+        {% endif %}
+        <form action="" method="post">
+             {% csrf_token %}
+            <h4 style="text-align: center; color: orange; font-weight: 700; font-size: 30px;">Sign Up</h4><br>
+            <h5 style="text-align: center; color: black;">or 
+              <a href="/login">
+                <span style="color: rgb(3, 47, 112); font-size: 14px;">sign in to your account</span>
+              </a>
+            </h5>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1"  placeholder="Enter Full Name" required name="full_name">
+            </div><br>
+            <div class="mb-3">
+                <label for="exampleFormControlInput2" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput2" placeholder="Enter Email" required name="email">
+            </div><br>
+            <div class="mb-3">
+                <label for="exampleFormControlInput3" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleFormControlInput3" placeholder="Enter Password" required name="password">
+            </div><br>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required name="confirm_password">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">I agree to the terms and conditions</label>
+            </div><br>
+            <div class="d-grid gap-2">
+             <a href=""></a>   <button class="btn btn-primary" type="submit">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock 'main' %}
